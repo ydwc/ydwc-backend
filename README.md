@@ -1,9 +1,9 @@
 # YDWC Members Database
 
-This is a thin programmatic layer between 
+This is a thin programmatic layer between the Postgres Database and the user. It will expose an API which can be used to add members to the database and query existing members.
 
 To get set up with this repo:
-   
+
 1) Install virtualenv wrapper:
     pip install virtualenvwrapper
     export WORKON_HOME=~/.virtualenvs
