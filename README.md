@@ -5,16 +5,18 @@ This is a thin programmatic layer between the Postgres Database and the user. It
 To get set up with this repo:
 
 1) Install virtualenv wrapper:
+```
     pip install virtualenvwrapper
     export WORKON_HOME=~/.virtualenvs
     source /usr/local/bin/virtualenvwrapper.sh
     mkvirtualenv ydwc-members -p python
+```
 
 2) Install the dependencies
-    pip install -t lib -r requirements.txt
+    `pip install -t lib -r requirements.txt`
 
 3) Run the app locally
-    FLASK_APP=main.py FLASK_DEBUG=1 flask run
+    `FLASK_APP=main.py FLASK_DEBUG=1 flask run`
 
 
 To deploy changes to production:
