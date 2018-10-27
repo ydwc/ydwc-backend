@@ -17,9 +17,9 @@ import pytest
 
 @pytest.fixture
 def app():
-    import app
-    app.app.testing = True
-    return app.app.test_client()
+    import main
+    main.app.testing = True
+    return main.app.test_client()
 
 
 def test_form(app):
