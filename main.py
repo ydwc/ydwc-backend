@@ -45,7 +45,7 @@ def make_stripe_payment():
         customer=customer.id,
         amount=amount,
         currency='gbp',
-        description=f'Payment for {event}',
+        description='Payment for {}'.format(event),
         metadata={'event': request.form['event']}
     )
     return
