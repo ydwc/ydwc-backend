@@ -13,31 +13,49 @@
 # limitations under the License.
 
 import logging
+import os
 from flask import Flask, render_template, request
 
+import stripe
+
 app = Flask(__name__)
+
+secret_key = os.environ['STRIPE_SECRET_KEY']
+print(secret_key)
+
+events_prices = {
+    'career_insights': 3000,
+    'eoy_dinner': 3500,
+    'conference': 948,
+    'retreat': 19200,
+}
+
+# Set your secret key: remember to change this to your live secret key in production
+# See your keys here: https://dashboard.stripe.com/account/apikeys
+stripe.api_key = secret_key
 
 @app.route('/')
 def home():
     return '<h1>HELLO YDWC!</h1>'
 
-@app.route('/form')
-def form():
-    return render_template('form.html')
+@app.route('/pay', methods=['POST'])
+def pay():
+    token = request.form['stripeToken']
+    event = request.form['event']
+    amount = events_prices[event]
 
-@app.route('/submitted', methods=['POST'])
-def submitted_form():
-    name = request.form['name']
-    email = request.form['email']
-    site = request.form['site_url']
-    comments = request.form['comments']
-
-    return render_template(
-        'submitted_form.html',
-        name=name,
-        email=email,
-        site=site,
-        comments=comments)
+    customer = stripe.Customer.create(
+        email=request.form['stripeEmail'],
+        source=token
+    )
+    charge = stripe.Charge.create(
+        customer=customer.id,
+        amount=amount,
+        currency='gbp',
+        description=f'Payment to YDWC for {event}',
+        metadata={'event': request.form['event']}
+    )
+    return ''
 
 @app.errorhandler(500)
 def server_error(e):
