@@ -21,7 +21,6 @@ import stripe
 app = Flask(__name__)
 
 secret_key = os.environ['STRIPE_SECRET_KEY']
-print(secret_key)
 
 events_prices = {
     'career_insights': 3000,
