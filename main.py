@@ -34,16 +34,13 @@ events_prices = {
 # See your keys here: https://dashboard.stripe.com/account/apikeys
 stripe.api_key = secret_key
 
-@app.route('/')
-def home():
-    return '<h1>HELLO YDWC!</h1>'
+def make_stripe_payment():
+    print(request.form)
+    print(f'Secret key {secret_key}')
 
-@app.route('/pay', methods=['POST'])
-def pay():
     token = request.form['stripeToken']
     event = request.form['event']
     amount = events_prices[event]
-
     customer = stripe.Customer.create(
         email=request.form['stripeEmail'],
         source=token
@@ -52,10 +49,24 @@ def pay():
         customer=customer.id,
         amount=amount,
         currency='gbp',
-        description=f'Payment to YDWC for {event}',
+        description=f'Payment for {event}',
         metadata={'event': request.form['event']}
     )
-    return ''
+    return
+
+@app.route('/')
+def home():
+    return '<h1>HELLO YDWC!</h1>'
+
+@app.route('/pay', methods=['POST'])
+def pay():
+    try:
+        make_stripe_payment()
+    except Exception as e:
+        # return jsonify({'result': 'failed', 'reason': str(e)})
+        return render_template('basic.html', message="""Failed to process payment. Please contact someone at YDWC.""")
+
+    return render_template('basic.html', message="Your payment was processed successfully.")
 
 @app.errorhandler(500)
 def server_error(e):
