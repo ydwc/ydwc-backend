@@ -35,9 +35,6 @@ events_prices = {
 stripe.api_key = secret_key
 
 def make_stripe_payment():
-    print(request.form)
-    print(f'Secret key {secret_key}')
-
     token = request.form['stripeToken']
     event = request.form['event']
     amount = events_prices[event]
