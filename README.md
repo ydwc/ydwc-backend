@@ -20,7 +20,11 @@ To get set up with this repo:
 
 
 To deploy changes to production:
-1) Create a working branch where you make your changes. When you merge the
-branch into master, it will automatically be deployed (there are no tests
-at the moment :p)
+1) Create a working branch where you make your changes. Automatic deploys to
+Google app engine were not working, because as far as I could tell, it only
+supports Python2.7. So now we are hosting on Compute Engine.
 
+To reload the server (this is terrible, we should fix this):
+`gunicorn --bind 0.0.0.0:8000 main:app -D`
+
+https://damyanon.net/post/flask-series-deployment/

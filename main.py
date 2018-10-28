@@ -37,8 +37,10 @@ def make_stripe_payment():
     token = request.form['stripeToken']
     event = request.form['event']
     amount = events_prices[event]
+    email = request.form['stripeEmail']
+
     customer = stripe.Customer.create(
-        email=request.form['stripeEmail'],
+        email=email,
         source=token
     )
     charge = stripe.Charge.create(
@@ -46,7 +48,8 @@ def make_stripe_payment():
         amount=amount,
         currency='gbp',
         description='Payment for {}'.format(event),
-        metadata={'event': request.form['event']}
+        metadata={'event': request.form['event']},
+        receipt_email=email,
     )
     return
 
